@@ -74,6 +74,7 @@ public class NeuralNetXor {
         //hidden layer -> output layer
         double n3=w5*h1+w6*h2+b3;
         double o =1/(1+Math.pow(Math.E,(-1*n3)));
+        
         //backward path
         //output layer->hidden layer 
         w5+=eta*(d-o)*o*(1-o)*h1;
@@ -85,9 +86,22 @@ public class NeuralNetXor {
         w3+=eta*(d-o)*o*(1-o)*w6*(h2)*(1-h2)*x1;
         w4+=eta*(d-o)*o*(1-o)*w6*(h2)*(1-h2)*x2;
         b1+=eta*(d-o)*o*(1-o)*w5*(h1)*(1-h1)* 1; 
-		b2+=eta*(d-o)*o*(1-o)*w6*(h2)*(1-h2)* 1; 
+        b2+=eta*(d-o)*o*(1-o)*w6*(h2)*(1-h2)* 1;
+                
         return (d-o);
     }
+    private double neuralUse(double x1,double x2){
+        double n1=w1*x1+w2*x2+b1;
+        double n2=w3*x1+w4*x2+b2;
+        double h1 =1/(1+Math.pow(Math.E,(-1*n1)));
+        double h2 =1/(1+Math.pow(Math.E,(-1*n2)));
+        //hidden layer -> output layer
+        double n3=w5*h1+w6*h2+b3;
+        double o =1/(1+Math.pow(Math.E,(-1*n3)));
+        
+        return o;
+    }
+    
     
     // learn AND
     // this will converge
@@ -95,7 +109,8 @@ public class NeuralNetXor {
        boolean x=ran.nextBoolean();
        boolean y=ran.nextBoolean();
        boolean z=x&y;
-       System.out.println(neural(boolTdouble(x),boolTdouble(y),boolTdouble(z)));
+       neural(boolTdouble(x),boolTdouble(y),boolTdouble(z));
+       System.out.println("OUTPUT : " +neural(boolTdouble(x),boolTdouble(y),boolTdouble(z)));
     }
 
     // learn OR
@@ -104,7 +119,7 @@ public class NeuralNetXor {
        boolean x=ran.nextBoolean();
        boolean y=ran.nextBoolean();
        boolean z=x|y;
-       System.out.println(neural(boolTdouble(x),boolTdouble(y),boolTdouble(z)));
+       System.out.println("OUTPUT : " +neural(boolTdouble(x),boolTdouble(y),boolTdouble(z)));
     }
 
     // learn XOR
@@ -113,7 +128,7 @@ public class NeuralNetXor {
        boolean x=ran.nextBoolean();
        boolean y=ran.nextBoolean();
        boolean z=x^y;
-       System.out.println(neural(boolTdouble(x),boolTdouble(y),boolTdouble(z)));
+       System.out.println("OUTPUT : " +neural(boolTdouble(x),boolTdouble(y),boolTdouble(z)));
     }
 
     // Init the weight
@@ -131,8 +146,13 @@ public class NeuralNetXor {
         NeuralNetXor neural=new NeuralNetXor();
         neural.init();
         for(int i=0;i<300000;i++){
-            neural.neuralXOR();
+            neural.neuralAND();
 	}
+        System.out.println("1 AND 1 :"+neural.neuralUse(1,1));
+        System.out.println("1 AND 0 :"+neural.neuralUse(1,0));
+        System.out.println("0 AND 1 :"+neural.neuralUse(0,1));
+        System.out.println("0 AND 0 :"+neural.neuralUse(0,0));
+        
     }
     
 }
